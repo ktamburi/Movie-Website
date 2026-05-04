@@ -1,17 +1,50 @@
-@import "./styles/index.css";
-@import "./styles/App.css";
-@import "./styles/Home.css";
-@import "./styles/Favorites.css";
-@import "./styles/Auth.css";
-@import "./styles/components/NavBar.css";
-@import "./styles/components/MovieCard.css";
-@import "./styles/components/StarRating.css";
+@import "tailwindcss";
 
-.main-content {
-  flex: 1;
-  padding: 1rem;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+@layer base {
+  :root {
+    --bg: #0b0f19;
+    --surface-1: rgba(0, 0, 0, 0.65);
+    --surface-2: rgba(255, 255, 255, 0.06);
+    --text-1: rgba(255, 255, 255, 0.92);
+    --text-2: rgba(255, 255, 255, 0.7);
+    --border: rgba(255, 255, 255, 0.12);
+    --primary: #0c43f8;
+    --primary-hover: #3156fa;
+    --focus: rgba(12, 67, 248, 0.55);
+    --rating: #ffd166;
+    color-scheme: dark;
+  }
+
+  html[data-theme="light"] {
+    --bg: #f6f7fb;
+    --surface-1: rgba(255, 255, 255, 0.85);
+    --surface-2: rgba(0, 0, 0, 0.04);
+    --text-1: rgba(15, 23, 42, 0.92);
+    --text-2: rgba(15, 23, 42, 0.7);
+    --border: rgba(15, 23, 42, 0.12);
+    --primary: #0c43f8;
+    --primary-hover: #3156fa;
+    --focus: rgba(12, 67, 248, 0.45);
+    --rating: #b45309;
+    color-scheme: light;
+  }
+
+  body {
+    @apply min-h-screen w-full antialiased;
+    background-color: var(--bg);
+    color: var(--text-1);
+  }
 }
 
+@layer components {
+  .star-fill::before {
+    content: "★";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--rating);
+    font-size: 18px;
+    line-height: 1;
+  }
+}

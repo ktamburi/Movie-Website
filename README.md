@@ -7,7 +7,7 @@ This app lets you discover movies via TMDB, sign in, save favorites, track watch
 ## Tech stack
 
 - **Framework**: Next.js (App Router)
-- **UI**: React + CSS
+- **UI**: React + Tailwind CSS
 - **Movie data**: TMDB API (requests proxied via server routes so the API key stays server-side)
 - **Auth**: Firebase Authentication (Email/Password)
 - **Database**: Firebase Realtime Database (favorites, watched, and star ratings)

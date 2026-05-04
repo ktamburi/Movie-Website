@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         />
         <Providers>
           <NavBar />
-          <main className="main-content">{children}</main>
+          <main className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col p-4 md:p-8">{children}</main>
         </Providers>
       </body>
     </html>
