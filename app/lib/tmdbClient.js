@@ -7,13 +7,11 @@ async function fetchJson(url) {
   return res.json();
 }
 
-export async function getPopularMovies() {
-  const data = await fetchJson("/api/tmdb/popular");
-  return data.results || [];
+export async function getPopularMovies(page = 1) {
+  return fetchJson(`/api/tmdb/popular?page=${encodeURIComponent(String(page))}`);
 }
 
-export async function searchMovies(query) {
-  const data = await fetchJson(`/api/tmdb/search?q=${encodeURIComponent(query)}`);
-  return data.results || [];
+export async function searchMovies(query, page = 1) {
+  return fetchJson(`/api/tmdb/search?q=${encodeURIComponent(query)}&page=${encodeURIComponent(String(page))}`);
 }
 

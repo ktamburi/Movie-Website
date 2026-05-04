@@ -29,8 +29,31 @@
     color-scheme: light;
   }
 
+  html:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+
   body {
     @apply min-h-screen w-full antialiased;
+    background-color: var(--bg);
+    color: var(--text-1);
+  }
+
+  html:not([data-theme="light"]) .pagination-select {
+    color-scheme: dark;
+    background-color: var(--surface-2);
+    color: var(--text-1);
+  }
+  html:not([data-theme="light"]) .pagination-select option {
+    background-color: var(--bg);
+    color: var(--text-1);
+  }
+  html[data-theme="light"] .pagination-select {
+    color-scheme: light;
+    background-color: var(--surface-2);
+    color: var(--text-1);
+  }
+  html[data-theme="light"] .pagination-select option {
     background-color: var(--bg);
     color: var(--text-1);
   }

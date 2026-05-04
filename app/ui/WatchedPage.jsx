@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import MovieCard from "../components/MovieCard";
+import Pagination from "../components/Pagination";
 import { useMovieContext } from "../context/MovieContext";
 import Link from "next/link";
 
@@ -12,6 +14,23 @@ const primaryBtn =
 
 export default function WatchedPage() {
   const { watched, user } = useMovieContext();
+  const [page, setPage] = useState(1);
+  const pageSize = 20;
+
+  useEffect(() => {
+    setPage(1);
+  }, [watched.length]);
+
+  const pageCount = Math.max(1, Math.ceil(watched.length / pageSize));
+  const pageMovies = useMemo(() => {
+    const safe = Math.min(Math.max(1, page), pageCount);
+    const start = (safe - 1) * pageSize;
+    return watched.slice(start, start + pageSize);
+  }, [watched, page, pageCount]);
+
+  useEffect(() => {
+    if (page > pageCount) setPage(pageCount);
+  }, [page, pageCount]);
 
   if (!user) {
     return (
@@ -40,10 +59,11 @@ export default function WatchedPage() {
       <div className="box-border w-full py-8">
         <h2 className="mb-8 text-center text-4xl text-[color:var(--text-1)] drop-shadow-md max-md:text-3xl">Watched Movies</h2>
         <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {watched.map((movie) => (
+          {pageMovies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
+        <Pagination page={page} pageCount={pageCount} onPageChange={setPage} />
       </div>
     );
   }
