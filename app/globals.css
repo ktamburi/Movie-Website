@@ -1,0 +1,17 @@
+@import "./styles/index.css";
+@import "./styles/App.css";
+@import "./styles/Home.css";
+@import "./styles/Favorites.css";
+@import "./styles/Auth.css";
+@import "./styles/components/NavBar.css";
+@import "./styles/components/MovieCard.css";
+@import "./styles/components/StarRating.css";
+
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
