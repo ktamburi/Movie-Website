@@ -3,11 +3,13 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { auth } from "../lib/firebaseClient";
+import { ref, remove } from "firebase/database";
+import { auth, rtdb } from "../lib/firebaseClient";
 
 const AuthContext = createContext(null);
 
@@ -55,6 +57,20 @@ export function AuthProvider({ children }) {
       signOut: async () => {
         setAuthError(null);
         await signOut(auth);
+      },
+      deleteAccount: async () => {
+        setAuthError(null);
+        const current = auth?.currentUser;
+        if (!current) return;
+        try {
+          if (rtdb) {
+            await remove(ref(rtdb, `users/${current.uid}`));
+          }
+          await deleteUser(current);
+        } catch (e) {
+          setAuthError(e?.message || "Delete account failed");
+          throw e;
+        }
       },
     };
   }, [user, initializing, authError]);

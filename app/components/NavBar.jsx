@@ -76,10 +76,11 @@ function IconUser({ className }) {
 }
 
 export default function NavBar() {
-  const { user, initializing, signOut } = useAuth();
+  const { user, initializing, signOut, deleteAccount } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const mobileMenuRef = useRef(null);
   const mobileGearRef = useRef(null);
   const profileMenuRef = useRef(null);
@@ -177,7 +178,7 @@ export default function NavBar() {
           </button>
 
           {!initializing && user && (
-            <div className="relative hidden md:block lg:hidden">
+            <div className="relative hidden md:block">
               <button
                 ref={profileBtnRef}
                 className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-[color:var(--border)] bg-[color:var(--surface-2)] p-0 text-[color:var(--text-1)] hover:bg-[color-mix(in_srgb,var(--surface-2),var(--text-1)_10%)] md:size-10"
@@ -200,16 +201,28 @@ export default function NavBar() {
                     <div className="text-xs text-[color:var(--text-2)]">Signed in</div>
                     <div className="truncate text-sm text-[color:var(--text-1)]">{user.email}</div>
                   </div>
-                  <button
-                    className="inline-flex w-full items-center justify-center rounded-[10px] bg-[color:var(--primary)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[color:var(--primary-hover)]"
-                    type="button"
-                    onClick={async () => {
-                      await signOut();
-                      setProfileMenuOpen(false);
-                    }}
-                  >
-                    Sign out
-                  </button>
+                  <div className="grid gap-2">
+                    <button
+                      className="inline-flex w-full items-center justify-center rounded-[10px] border border-red-500/35 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-200 transition hover:bg-red-500/15"
+                      type="button"
+                      onClick={() => {
+                        setConfirmDeleteOpen(true);
+                        setProfileMenuOpen(false);
+                      }}
+                    >
+                      Delete account
+                    </button>
+                    <button
+                      className="inline-flex w-full items-center justify-center rounded-[10px] bg-[color:var(--primary)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[color:var(--primary-hover)]"
+                      type="button"
+                      onClick={async () => {
+                        await signOut();
+                        setProfileMenuOpen(false);
+                      }}
+                    >
+                      Sign out
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -217,14 +230,7 @@ export default function NavBar() {
           {initializing ? (
             <span className={`${linkBase} text-[color:var(--text-2)]`}>Loading...</span>
           ) : user ? (
-            <>
-              <span className="hidden max-w-[140px] truncate text-sm text-[color:var(--text-2)] lg:inline lg:max-w-[220px] xl:max-w-xs">
-                {user.email}
-              </span>
-              <button className={`${linkBase} hidden shrink-0 lg:inline-flex`} onClick={signOut} type="button">
-                Sign out
-              </button>
-            </>
+            null
           ) : (
             <Link href="/auth" className={`${linkBase} hidden shrink-0 md:inline-flex`}>
               Sign in
@@ -268,16 +274,28 @@ export default function NavBar() {
               </button>
 
               {user ? (
-                <button
-                  className="inline-flex w-full items-center justify-center rounded-[10px] bg-[color:var(--primary)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[color:var(--primary-hover)]"
-                  type="button"
-                  onClick={async () => {
-                    await signOut();
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign out
-                </button>
+                <>
+                  <button
+                    className="inline-flex w-full items-center justify-center rounded-[10px] border border-red-500/35 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-200 transition hover:bg-red-500/15"
+                    type="button"
+                    onClick={() => {
+                      setConfirmDeleteOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Delete account
+                  </button>
+                  <button
+                    className="inline-flex w-full items-center justify-center rounded-[10px] bg-[color:var(--primary)] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[color:var(--primary-hover)]"
+                    type="button"
+                    onClick={async () => {
+                      await signOut();
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Sign out
+                  </button>
+                </>
               ) : (
                 <Link
                   href="/auth"
@@ -287,6 +305,45 @@ export default function NavBar() {
                   Sign in
                 </Link>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmDeleteOpen && (
+        <div className="fixed inset-0 z-[60] grid place-items-center px-4 py-8">
+          <button
+            type="button"
+            className="absolute inset-0 cursor-default bg-black/55"
+            aria-label="Close delete confirmation"
+            onClick={() => setConfirmDeleteOpen(false)}
+          />
+          <div className="relative w-full max-w-[420px] rounded-[16px] border border-[color:var(--border)] bg-[color:var(--bg)] p-4 shadow-[0_22px_70px_rgba(0,0,0,0.55)]">
+            <div className="mb-2 text-lg font-semibold text-[color:var(--text-1)]">Delete account?</div>
+            <p className="text-sm leading-relaxed text-[color:var(--text-2)]">
+              This will permanently delete your account and remove your saved favorites and watched list. This action can’t be undone.
+            </p>
+            <div className="mt-4 flex flex-wrap justify-end gap-2">
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-[10px] border border-[color:var(--border)] bg-[color:var(--surface-2)] px-4 py-2.5 text-sm font-semibold text-[color:var(--text-1)] transition hover:bg-[color-mix(in_srgb,var(--surface-2),var(--text-1)_10%)]"
+                onClick={() => setConfirmDeleteOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-[10px] bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-500"
+                onClick={async () => {
+                  try {
+                    await deleteAccount?.();
+                  } finally {
+                    setConfirmDeleteOpen(false);
+                  }
+                }}
+              >
+                Yes, delete
+              </button>
             </div>
           </div>
         </div>
