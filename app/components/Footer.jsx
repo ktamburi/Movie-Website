@@ -60,7 +60,7 @@ export default function Footer() {
           <span className="inline-flex items-center gap-2 text-[color:var(--text-1)]">
             <a
               className="inline-flex rounded-md p-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--focus)]"
-              href="https://github.com/ktamburi"
+              href="https://github.com/ktamburi/Movie-Website"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -148,4 +148,3 @@ export default function Footer() {
     </footer>
   );
 }
-
