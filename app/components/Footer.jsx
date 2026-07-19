@@ -38,7 +38,7 @@ export default function Footer() {
           </span>
           <a
             className="font-semibold text-[color:var(--text-1)] underline decoration-transparent underline-offset-4 transition hover:decoration-[color:var(--text-1)]"
-            href="https://github.com/ktamburi"
+            href="https://klaudiatamburi.web.app/"
             target="_blank"
             rel="noopener noreferrer"
           >
